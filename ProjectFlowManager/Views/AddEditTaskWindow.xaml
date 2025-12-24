@@ -1,0 +1,95 @@
+﻿<Window x:Class="ProjectFlowManager.Views.AddEditTaskWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Задача" Height="450" Width="400"
+        WindowStartupLocation="CenterOwner">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        
+        <GroupBox Grid.Row="0" Header="Проект" Margin="0,0,0,10">
+            <ComboBox ItemsSource="{Binding Projects}" 
+                     DisplayMemberPath="Name"
+                     SelectedItem="{Binding SelectedProject}"
+                     IsEnabled="{Binding IsProjectSelectable}"/>
+        </GroupBox>
+
+       
+        <TextBlock Grid.Row="1" Text="Название задачи:" Margin="0,0,0,5"/>
+        <TextBox Grid.Row="2" Text="{Binding TaskName, UpdateSourceTrigger=PropertyChanged}"
+                Margin="0,0,0,10"/>
+
+     
+        <TextBlock Grid.Row="3" Text="Описание:" Margin="0,0,0,5"/>
+        <TextBox Grid.Row="4" Text="{Binding TaskDescription}"
+                Margin="0,0,0,10" Height="60" TextWrapping="Wrap"/>
+
+       
+        <Grid Grid.Row="5" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="Статус:" Margin="0,0,0,5"/>
+                <ComboBox ItemsSource="{Binding TaskStatuses}"
+                         SelectedItem="{Binding SelectedStatus}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                <TextBlock Text="Сложность (1-5):" Margin="0,0,0,5"/>
+                <ComboBox ItemsSource="{Binding Difficulties}"
+                         SelectedItem="{Binding SelectedDifficulty}"/>
+            </StackPanel>
+        </Grid>
+
+        
+        <TextBlock Grid.Row="6" Text="Дедлайн:" Margin="0,0,0,5"/>
+        <Grid Grid.Row="7" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <DatePicker Grid.Column="0" SelectedDate="{Binding Deadline}" Width="120"/>
+            <CheckBox Grid.Column="1" Content="Без дедлайна" 
+                     IsChecked="{Binding NoDeadline}" Margin="10,0,0,0"
+                     VerticalAlignment="Center"/>
+        </Grid>
+
+        
+        <TextBlock Grid.Row="8" Text="{Binding ValidationMessage}"
+                  Foreground="Red" Margin="0,0,0,10" TextWrapping="Wrap">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding HasValidationError}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
+        
+        <StackPanel Grid.Row="9" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Сохранить" Width="100" Height="30" Margin="5" 
+                   Command="{Binding SaveCommand}" IsDefault="True"/>
+            <Button Content="Отмена" Width="100" Height="30" Margin="5" 
+                   Command="{Binding CancelCommand}" IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</Window>
